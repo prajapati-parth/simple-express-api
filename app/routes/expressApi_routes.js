@@ -1,6 +1,4 @@
-import mongodb from 'mongodb'
-
-var ObjectID = mongodb.ObjectID
+import { ObjectID } from 'mongodb'
 
 module.exports = (app, db) => {
     app.get('/test/:id', (req, res) => {

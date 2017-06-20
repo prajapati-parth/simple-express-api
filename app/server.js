@@ -1,11 +1,10 @@
 import express from 'express'
-import mongodb from 'mongodb'
+import { MongoClient } from 'mongodb'
 import bodyParser from 'body-parser'
 
 import expressapiRoutes from './routes'
 import db from '../config/db'
 
-const MongoClient = mongodb.MongoClient
 const app = express()
 const port = 8000
 
