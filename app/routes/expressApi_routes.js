@@ -51,4 +51,59 @@ module.exports = (app, db) => {
             }
         })
     })
+
+    // API endpoints for uxFramework demo
+    app.get('/todo', (req, res) => {
+        db.collection('todoList', (err, collection) => {
+            collection.find().toArray((err, items) => {
+                res.send(items)
+            });
+        });
+    })
+
+    app.get('/table-data', (req, res) => {
+        db.collection('employeeData', (err, collection) => {
+            collection.find().toArray((err, items) => {
+                res.send(items)
+            })
+        })
+    })
+
+    app.post('/employee-data', (req, res) => {
+        const details = {
+            grno: parseInt(req.body.grno)
+        }
+        db.collection('employeeData', (err, collection) => {
+            collection.find({ grno: { $lte: details.grno } }).toArray((err, items) => {
+                setTimeout(() => {
+                    res.status(200).send({
+                        employeeData: items,
+                        total: items.length
+                    })
+                }, 3000)
+            })
+        })
+    })
+
+    app.post('/employee-data-autocomplete', (req, res) => {
+        const details = {
+            grno: parseInt(req.body.grno)
+        }
+        db.collection('employeeData', (err, collection) => {
+            collection.find({ grno: { $lte: details.grno } }).toArray((err, items) => {
+                let returnData = items.map(item => {
+                    return {
+                        email: item.emailAddress,
+                        region: item.region,
+                        userId: item.userId,
+                        title: 'Employee name',
+                        searchCategory: 2
+                    }
+                })
+                setTimeout(() => {
+                    res.status(200).send(returnData)
+                }, 1400)
+            })
+        })
+    })
 };
